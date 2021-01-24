@@ -1,42 +1,41 @@
 import quark from '@treizenith/quark';
-import $thrower from './thrower';
 import $unique from './unique';
-import $event from './event';
-import $queue from './queue';
 import * as $async from './async';
 declare class Atom {
     #private;
-    static tag: string;
-    static promise: PromiseConstructor;
-    static async: typeof $async;
     static _: typeof quark;
-    static thrower: typeof $thrower;
+    static thrower: {
+        make(message?: string | undefined, options?: import("./general").ThrowerOpt, strict?: boolean | undefined): never;
+        isErr(a: any): boolean;
+    };
+    static async: typeof $async;
     static unique: typeof $unique;
-    static event: typeof $event;
-    static version: number[];
-    tag: string;
-    promise: PromiseConstructor;
-    async: typeof $async;
+    static xs: typeof import("xstream").Stream;
+    static tag: string;
+    static sym: symbol;
+    static err: symbol;
     _: typeof quark;
-    thrower: typeof $thrower;
+    tag: string;
+    thrower: {
+        make(message?: string | undefined, options?: import("./general").ThrowerOpt, strict?: boolean | undefined): never;
+        isErr(a: any): boolean;
+    };
+    async: typeof $async;
     unique: typeof $unique;
-    event: typeof $event;
+    xs: typeof import("xstream").Stream;
+    publicKEY: string;
     sym: symbol;
     err: symbol;
-    queue: new (name?: string | number | undefined) => $queue;
-    queues: Record<string | number | symbol, $queue>;
-    publicKEY: string;
+    main: import("xstream").Stream<any>;
+    options: OPT;
+    $: Record<string | number | symbol, any>;
+    [x: string]: any;
+    [x: number]: any;
     constructor(options?: OPT, priv?: string);
     set(priv: string, propName: string, value?: unknown): any;
     get(priv: string, propName: string): any;
     plugins: AtomPlugin[];
     plug<T extends AtomPluginArg>(plugin: T): this & ReturnTypeOf<T>;
-    isErr(a: unknown): boolean;
-    checkVersion(version: string): boolean;
-    options: any;
-    $: Record<string | number | symbol, any>;
-    [x: string]: any;
-    [x: number]: any;
 }
 export default Atom;
 export declare type ApiExtension = {

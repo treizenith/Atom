@@ -1,33 +1,29 @@
 import quark from '@treizenith/quark';
-import $thrower from './thrower';
+import xs from 'xstream';
+
+import thrower from './thrower';
 import $unique from './unique';
-import $promise from './promise';
-import $event from './event';
-import $queue from './queue';
 import * as $async from './async';
-
 class Atom {
-	static tag: string = '[ AtomJS ] ';
-	static promise = $promise;
-	static async = $async;
-	// ts will set the type of quark itself
 	static _ = quark;
-	static thrower = $thrower;
+	static thrower = thrower;
+	static async = $async;
 	static unique = $unique;
-	static event = $event;
-	static version: number[] = [1, 0, 0];
+	static xs = xs;
+	static tag: string = '[ AtomJS ] ';
+	static sym = Symbol('ex');
+	static err = Symbol('err');
 
-	tag = Atom.tag;
-	promise = Atom.promise;
-	async = Atom.async;
 	_ = Atom._;
+	tag = Atom.tag;
 	thrower = Atom.thrower;
+	async = Atom.async;
 	unique = Atom.unique;
-	event = Atom.event;
-	#version: number[] = Atom.version;
+	xs = Atom.xs;
+	publicKEY: string = 'Treizenith';
 
-	sym = Symbol('ex');
-	err = Symbol('err');
+	sym = Atom.sym;
+	err = Atom.err;
 	#private: {
 		privateKEY: string;
 		trials: any[];
@@ -35,19 +31,30 @@ class Atom {
 		privateKEY: '',
 		trials: [],
 	};
+	main = this.xs.never();
 
-	queue = $queue.bind(null, this);
-	queues: Record<string | number | symbol, $queue> = {};
-	publicKEY: string = 'EXORPIT';
+	options!: OPT;
+	$: Record<string | number | symbol, any> = {};
+	[x: string]: any;
+	[x: number]: any;
 
 	constructor(options?: OPT, priv?: string) {
-		if (!this._.is.obj(options)) {
-			this.thrower(
-				['BASE ERR', 'first parameter must be an object !'],
+		if (!this._.is.obj(options) && !this._.is.und(options)) {
+			this.thrower.make(
+				'options must be objects',
+				{
+					target: this.tag,
+				},
 				true,
 			);
 		}
-		this.options = options;
+
+		if (!this._.is.und(options)) {
+			this.options = options;
+		} else {
+			this.options = {};
+		}
+
 		if (priv) {
 			if (!this._.is.str(priv)) {
 				this.#private.privateKEY = this.unique();
@@ -62,13 +69,9 @@ class Atom {
 			return this._.obj.set(this.#private, propName, value);
 		} else {
 			this.#private.trials.push([priv, propName, value]);
-			return this.thrower(
-				[
-					'BASE SECURITY ERR',
-					'Atom.set needs priv to set any property on inctance',
-				],
-				false,
-			);
+			return this.thrower.make('invalid priv in set', {
+				target: this.tag,
+			});
 		}
 	}
 
@@ -77,13 +80,9 @@ class Atom {
 			return this._.obj.get(this.#private, propName);
 		} else {
 			this.#private.trials.push([priv, propName]);
-			return this.thrower(
-				[
-					'BASE SECURITY ERR',
-					'Atom.get needs priv to get any property on inctance',
-				],
-				false,
-			);
+			return this.thrower.make('invalid priv in get', {
+				target: this.tag,
+			});
 		}
 	}
 
@@ -99,33 +98,6 @@ class Atom {
 
 		return this as this & ReturnTypeOf<T>;
 	}
-
-	isErr(a: unknown) {
-		return this.err === a;
-	}
-
-	checkVersion(version: string) {
-		let x = true;
-		version.split('.').map((y: any, i: number) => {
-			if (y.includes('-')) {
-				x = x && this.#version[i] <= parseInt(y.split('<').join(''));
-			} else if (y.includes('+')) {
-				x = x && this.#version[i] >= parseInt(y.split('>').join(''));
-			} else if (y.includes('<')) {
-				x = x && this.#version[i] < parseInt(y.split('<').join(''));
-			} else if (y.includes('>')) {
-				x = x && this.#version[i] > parseInt(y.split('>').join(''));
-			} else {
-				x = x && this.#version[i] == parseInt(y);
-			}
-		});
-		return x;
-	}
-
-	options: any = {};
-	$: Record<string | number | symbol, any> = {};
-	[x: string]: any;
-	[x: number]: any;
 }
 
 export default Atom;

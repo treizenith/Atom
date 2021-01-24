@@ -3,7 +3,6 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
 import typescript2 from 'rollup-plugin-typescript2';
-import { babel } from '@rollup/plugin-babel';
 
 import pkg from './package.json';
 
@@ -23,51 +22,50 @@ const banner = `/*!
  * @returns {import('rollup').OutputOptions}
  */
 function createOutputOptions(options) {
-  return {
-    banner,
-    name: 'quark',
-    exports: 'named',
-    sourcemap: true,
-    ...options,
-  };
+	return {
+		banner,
+		name: 'quark',
+		exports: 'named',
+		sourcemap: true,
+		...options,
+	};
 }
 
 /**
  * @type {import('rollup').RollupOptions}
  */
 const options = {
-  input: './src/index.ts',
-  output: [
-    createOutputOptions({
-      file: './dist/index.js',
-      format: 'commonjs',
-    }),
-    createOutputOptions({
-      file: './dist/index.esm.js',
-      format: 'esm',
-    }),
-    createOutputOptions({
-      file: './dist/index.umd.js',
-      format: 'umd',
-      exports: "default",
-    }),
-    createOutputOptions({
-      file: './dist/index.umd.min.js',
-      format: 'umd',
-      exports: "default",
-      plugins: [terser()],
-    }),
-  ],
-  plugins: [
-    nodeResolve(),
-    commonjs(),
-    typescript2({
-      clean: true,
-      useTsconfigDeclarationDir: true,
-      tsconfig: './tsconfig.json',
-    }),
-    babel({ babelHelpers: 'bundled' }),
-  ],
+	input: './src/index.ts',
+	output: [
+		createOutputOptions({
+			file: './dist/index.js',
+			format: 'commonjs',
+		}),
+		createOutputOptions({
+			file: './dist/index.esm.js',
+			format: 'esm',
+		}),
+		createOutputOptions({
+			file: './dist/index.umd.js',
+			format: 'umd',
+			exports: 'default',
+		}),
+		createOutputOptions({
+			file: './dist/index.umd.min.js',
+			format: 'umd',
+			exports: 'default',
+			plugins: [terser()],
+		}),
+	],
+	plugins: [
+		nodeResolve(),
+		commonjs(),
+		typescript2({
+			clean: true,
+			useTsconfigDeclarationDir: true,
+			tsconfig: './tsconfig.json',
+		}),
+	],
 };
 
 export default options;

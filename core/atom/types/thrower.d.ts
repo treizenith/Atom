@@ -1,5 +1,7 @@
-export interface THROWER {
-    err?: Error;
-}
-export default function thrower(arr: Array<any>, hard?: boolean, options?: object): THROWER;
+import type { ThrowerOpt } from './general';
+declare const _default: {
+    make(message?: string | undefined, options?: ThrowerOpt, strict?: boolean | undefined): never;
+    isErr(a: any): boolean;
+};
+export default _default;
 //# sourceMappingURL=thrower.d.ts.map

@@ -1,39 +1,21 @@
+import type { ThrowerOpt } from './general';
 import Atom from './index';
 
-export interface THROWER {
-	err?: Error;
-}
+let defs: ThrowerOpt = {};
+export default {
+	make(message?: string, options: ThrowerOpt = defs, strict?: boolean) {
+		let err = Object.assign(new Error(message), options, {
+			err: Atom.err,
+		});
 
-export default function thrower(
-	arr: Array<any>,
-	hard?: boolean,
-	options?: object,
-): THROWER {
-	if (!Atom._.is.arr(arr)) {
-		return thrower(
-			['$thrower ERR', 'first argument must be an array !'],
-			true,
-		);
-	} else if (!Atom._.is.bool(hard)) {
-		return thrower(
-			['$thrower ERR', 'second argument must be an boolean ! '],
-			true,
-		);
-	} else if (options && !Atom._.is.obj(options)) {
-		return thrower(
-			['$thrower ERR', 'third argument must be an object ?'],
-			true,
-		);
-	}
+		if (strict) {
+			throw err;
+		}
 
-	arr.unshift(Atom.tag);
-	let err = new Error(arr.join(' \n'));
+		return err;
+	},
 
-	if (hard) {
-		throw err;
-	} else {
-		return {
-			err,
-		};
-	}
-}
+	isErr(a: any) {
+		return Atom.err === a;
+	},
+};
