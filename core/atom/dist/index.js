@@ -1,5 +1,5 @@
 /*!
- * @treizenith/atom v2.0.0
+ * @treizenith/atom v2.1.0
  * (c) giveerr <givessomeerr.e@gmail.com>
  * Released under the MIT License.
  */
@@ -31,7 +31,7 @@ function __classPrivateFieldGet(receiver, privateMap) {
 }
 
 /*!
- * @treizenith/quark v1.5.4
+ * @treizenith/quark v1.5.5
  * (c) giveerr <givessomeerr.e@gmail.com>
  * Released under the MIT License.
  */

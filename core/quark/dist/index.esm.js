@@ -1,5 +1,5 @@
 /*!
- * @treizenith/quark v1.5.4
+ * @treizenith/quark v1.5.5
  * (c) giveerr <givessomeerr.e@gmail.com>
  * Released under the MIT License.
  */
