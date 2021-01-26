@@ -48,7 +48,7 @@
 		"@treizenith/quark": "^1.5.4",
 		"big.js": "^6.0.3",
 		"emittery": "^0.7.2",
-		"xstream": "^11.14.0"
+		"wonka": "^4.0.15"
 	},
 	"browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead",
 	"publishConfig": {

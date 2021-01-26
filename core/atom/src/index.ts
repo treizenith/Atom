@@ -1,15 +1,17 @@
 import quark from '@treizenith/quark';
-import xs from 'xstream';
+import * as xs from 'wonka';
 
-import thrower from './thrower';
 import $unique from './unique';
+import thrower from './thrower';
 import * as $async from './async';
+import xss from './xss';
 class Atom {
 	static _ = quark;
 	static thrower = thrower;
 	static async = $async;
 	static unique = $unique;
 	static xs = xs;
+	static xss = xss(xs);
 	static tag: string = '[ AtomJS ] ';
 	static sym = Symbol('ex');
 	static err = Symbol('err');
@@ -20,6 +22,7 @@ class Atom {
 	async = Atom.async;
 	unique = Atom.unique;
 	xs = Atom.xs;
+	xss = Atom.xss;
 	publicKEY: string = 'Treizenith';
 
 	sym = Atom.sym;
@@ -31,7 +34,6 @@ class Atom {
 		privateKEY: '',
 		trials: [],
 	};
-	main = this.xs.never();
 
 	options!: OPT;
 	$: Record<string | number | symbol, any> = {};

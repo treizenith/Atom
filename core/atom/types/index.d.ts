@@ -1,4 +1,5 @@
 import quark from '@treizenith/quark';
+import * as xs from 'wonka';
 import $unique from './unique';
 import * as $async from './async';
 declare class Atom {
@@ -10,7 +11,21 @@ declare class Atom {
     };
     static async: typeof $async;
     static unique: typeof $unique;
-    static xs: typeof import("xstream").Stream;
+    static xs: typeof xs;
+    static xss: {
+        Observable: {
+            new ({ start, end, }?: {
+                start?: import("./general").Handler | undefined;
+                end?: import("./general").Handler | undefined;
+            }): {
+                native: xs.Subject<unknown>;
+                pipe: unknown;
+                next: (data: unknown) => void;
+                subscribe(handler: (_1: unknown) => void): () => void;
+                end(): void;
+            };
+        };
+    };
     static tag: string;
     static sym: symbol;
     static err: symbol;
@@ -22,11 +37,24 @@ declare class Atom {
     };
     async: typeof $async;
     unique: typeof $unique;
-    xs: typeof import("xstream").Stream;
+    xs: typeof xs;
+    xss: {
+        Observable: {
+            new ({ start, end, }?: {
+                start?: import("./general").Handler | undefined;
+                end?: import("./general").Handler | undefined;
+            }): {
+                native: xs.Subject<unknown>;
+                pipe: unknown;
+                next: (data: unknown) => void;
+                subscribe(handler: (_1: unknown) => void): () => void;
+                end(): void;
+            };
+        };
+    };
     publicKEY: string;
     sym: symbol;
     err: symbol;
-    main: import("xstream").Stream<any>;
     options: OPT;
     $: Record<string | number | symbol, any>;
     [x: string]: any;
