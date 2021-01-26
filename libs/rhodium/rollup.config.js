@@ -2,6 +2,7 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript2 from 'rollup-plugin-typescript2';
+import json from '@rollup/plugin-json';
 
 import pkg from './package.json';
 
@@ -46,7 +47,10 @@ const options = {
 		}),
 	],
 	plugins: [
-		nodeResolve(),
+		json(),
+		nodeResolve({
+			preferBuiltins: true,
+		}),
 		commonjs(),
 		typescript2({
 			clean: true,
