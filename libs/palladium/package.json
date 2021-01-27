@@ -1,6 +1,6 @@
 {
 	"name": "@treizenith/palladium",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "package for creating servers with microservices",
 	"main": "dist/index.js",
 	"types": "types/index.d.ts",
@@ -28,6 +28,7 @@
 	"homepage": "https://github.com/treizenith/atom.git#readme",
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^16.0.0",
+		"@rollup/plugin-json": "^4.1.0",
 		"@rollup/plugin-node-resolve": "^10.0.0",
 		"@types/prettier": "^2.1.6",
 		"npm-run-all": "^4.1.5",
@@ -35,8 +36,7 @@
 		"rollup": "^2.36.2",
 		"rollup-plugin-typescript2": "^0.27.3",
 		"tslib": "^2.1.0",
-		"typescript": "4.1.3",
-		"@rollup/plugin-json": "^4.1.0"
+		"typescript": "4.1.3"
 	},
 	"dependencies": {
 		"@treizenith/atom": "^2.1.1",
