@@ -46,5 +46,5 @@
  * // }
  * ```
  */
-export default function set(obj: object | any[], path: string | any[], value?: unknown): any;
+export default function set(obj: object | any[], path: string | any[], value?: unknown): object | any[];
 //# sourceMappingURL=set.d.ts.map

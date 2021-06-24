@@ -19,17 +19,22 @@ export default class quark {
         reg: typeof import("./is/regexp").default;
         str: typeof import("./is/string").default;
         und: typeof import("./is/undefined").default;
+        like: typeof import("./is/like").default;
+        objEmp: typeof import("./is/object_empty").default;
     };
     static u: {
         pure: typeof import("./utils/pure").default;
         type: typeof import("./utils/type").default;
         merge: typeof import("./utils/merge").default;
+        diff: typeof import("./utils/diff");
+        cb: typeof import("./utils/cb").default;
     };
     static obj: {
         get: typeof import("./obj/get").default;
         set: typeof import("./obj/set").default;
         has: typeof import("./obj/has").default;
         del: typeof import("./obj/delete").default;
+        cl: typeof import("./obj/clone").default;
     };
 }
 //# sourceMappingURL=quark.d.ts.map

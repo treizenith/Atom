@@ -1,0 +1,12 @@
+{
+  "files.exclude": {
+    ".vscode": true,
+    "yarn.lock": true,
+    ".gitignore": true,
+    ".prettierignore": true,
+    "lerna.json": true,
+    "LICENSE": true,
+    "README.md": true,
+    "prettier.config.js": true
+  }
+}

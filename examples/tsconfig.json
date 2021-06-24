@@ -18,7 +18,7 @@
 		"importsNotUsedAsValues": "error",
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitReturns": true,
-		"noUnusedLocals": true,
+		"noUnusedLocals": false,
 		"noImplicitAny": true,
 		"noUnusedParameters": true,
 		"strict": true,

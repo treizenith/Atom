@@ -48,17 +48,20 @@ export default function del(target: object | any[], path: string | any[]): any {
 		path = path.toString().match(/[^.[\]]+/g) || [];
 	}
 
-	return path.reduce(
+	path.reduce(
 		(xs: any, x: any, i: any, arr: any[]) =>
 			xs && xs[x]
 				? i == arr.length - 1 && Reflect.has(xs, x)
 					? (() => {
-							let data = xs[x];
-							Reflect.deleteProperty(xs, x);
-							return data;
-					  })()
+						let data = xs[x];
+						Reflect.deleteProperty(xs, x);
+						return data;
+					})()
 					: xs[x]
 				: (arr.splice(1), false),
 		target,
 	);
+
+
+	return target;
 }

@@ -55,7 +55,7 @@ export default function set(
 	obj: object | any[],
 	path: string | any[],
 	value?: unknown,
-): any {
+): object | any[] {
 	if (!$obj(obj) && !$arr(obj)) return obj;
 
 	if ($str(path)) {

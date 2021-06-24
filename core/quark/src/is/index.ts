@@ -9,6 +9,8 @@ import prom from './promise';
 import reg from './regexp';
 import str from './string';
 import und from './undefined';
+import like from './like';
+import objEmp from "./object_empty";
 
 export default {
 	arr,
@@ -22,4 +24,6 @@ export default {
 	reg,
 	str,
 	und,
+	like,
+	objEmp
 };

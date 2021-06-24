@@ -9,6 +9,8 @@ import prom from './promise';
 import reg from './regexp';
 import str from './string';
 import und from './undefined';
+import like from './like';
+import objEmp from "./object_empty";
 declare const _default: {
     arr: typeof arr;
     bool: typeof bool;
@@ -21,6 +23,8 @@ declare const _default: {
     reg: typeof reg;
     str: typeof str;
     und: typeof und;
+    like: typeof like;
+    objEmp: typeof objEmp;
 };
 export default _default;
 //# sourceMappingURL=index.d.ts.map
