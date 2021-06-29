@@ -2,30 +2,25 @@
 import Atom from ".";
 import type { Computation, Writer, Subscriber, Observable, ObservableMega } from "./general";
 
-
-var computedTracker: any[] = [];
+var map: Record<any, any[]> = {};
 
 export function space<T>(value?: T): ObservableMega<T> {
   let $state = state(value) as ObservableMega<T>;
 
   $state.set = (path, data) => {
-    // @ts-ignore
-    $state(Atom._.obj.set(Atom._.obj.cl($state()), path, data));
+    $state(Atom._.obj.set(Atom._.obj.cl($state() as Object), path, data) as unknown as T);
   }
 
   $state.get = (path) => {
-    // @ts-ignore
-    return Atom._.obj.get(Atom._.obj.cl($state()), path);
+    return Atom._.obj.get(Atom._.obj.cl($state() as Object), path);
   }
 
   $state.has = (path) => {
-    // @ts-ignore
-    return Atom._.obj.has(Atom._.obj.cl($state()), path);
+    return Atom._.obj.has(Atom._.obj.cl($state() as Object), path);
   }
 
   $state.del = (path) => {
-    // @ts-ignore
-    $state(Atom._.obj.del(Atom._.obj.cl($state()), path));
+    $state(Atom._.obj.del(Atom._.obj.cl($state() as Object), path));
   }
 
   return $state;
@@ -54,10 +49,10 @@ export function state<T>(value?: T): Observable<T> {
   };
 
   self.subscribe = subscribe;
-
   self.unsubscribe = (subscriber: Subscriber<T>) => {
     remove(subscribers, subscriber);
   };
+  self.subscribers = subscribers;
 
   function write(newValue: T) {
     if (newValue === value && (value === null || typeof value !== 'object')) {
@@ -73,10 +68,14 @@ export function state<T>(value?: T): Observable<T> {
   }
 
   function read() {
-    var runningComputation = computedTracker[computedTracker.length - 1];
-    if (runningComputation) {
-      subscribe(runningComputation[0]);
+    for (let keys in map) {
+      let runningComputation = map[keys][map[keys].length - 1];
+
+      if (runningComputation) {
+        subscribe(runningComputation[0]);
+      }
     }
+
     return value;
   }
 
@@ -87,20 +86,23 @@ export function state<T>(value?: T): Observable<T> {
 export const computed = <T>(fn: Computation<T>): Observable<T> => {
   var self = state<T>();
   var computationToken = [runComputed]
+  var priv = Atom.unique();
+
+  map[priv] = map[priv] || [];
 
   runComputed();
   return self;
 
   function runComputed() {
-    detectCircularity(computationToken);
-    computedTracker.push(computationToken);
+    detectCircularity(priv, computationToken);
+    map[priv].push(computationToken);
     var errors, result;
     try {
       result = fn();
     } catch (e) {
       errors = e;
     }
-    computedTracker.pop();
+    map[priv].pop();
     if (errors) {
       throw errors;
     }
@@ -114,8 +116,8 @@ export const from = <T extends Writer>(executor: T): Parameters<Writer>[0] => {
   return self;
 };
 
-function detectCircularity(token: unknown) {
-  if (computedTracker.indexOf(token) > -1) {
+function detectCircularity(priv: string, token: unknown) {
+  if (map[priv].indexOf(token) > -1) {
     throw Error('Circular computation');
   }
 }

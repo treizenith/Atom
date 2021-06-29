@@ -42,6 +42,7 @@ export interface Observable<T> {
 
 	subscribe: AddSubscriber<T>;
 	unsubscribe: RemoveSubscriber;
+	subscribers: Subscriber<T>[]
 }
 
 export interface ObservableMega<T> {
@@ -54,6 +55,7 @@ export interface ObservableMega<T> {
 	get: (path: string | any[]) => unknown;
 	del: (path: string | any[]) => void;
 	has: (path: string | any[]) => boolean;
+	subscribers: Subscriber<T>[]
 }
 
 export interface Subscriber<T> {
