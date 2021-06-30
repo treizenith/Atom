@@ -3,6 +3,7 @@ import type from './type';
 import merge from './merge';
 import * as diff from './diff';
 import cb from './cb';
+import rn from "./rn";
 
 export default {
 	pure,
@@ -10,4 +11,5 @@ export default {
 	merge,
 	diff,
 	cb,
+	rn,
 };
