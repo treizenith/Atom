@@ -1,18 +1,20 @@
 import type Atom from '@treizenith/atom';
 import type { Server as HTTP } from "http";
-import type { Server } from "socket.io";
-import type { io as IO } from "socket.io-client";
 import type { ky } from 'ky/distribution/types/ky';
-import type { Config } from './general';
+import type { Config, Server, IOBack, IOFront, Client, Res } from './general';
 
-export default class Li {
+export default class Li<T> {
   props: {
     url: string
   } = {
       url: "",
     }
 
-  constructor(public ky: ky, public io: typeof IO & typeof Server, public atom: typeof Atom, public instance: Atom, public $config?: Config) { }
+  socket?: Server | Client
+
+  user = this.atom.reactor.space<T>({} as T);
+
+  constructor(public ky: ky, public io: IOFront | IOBack, public atom: typeof Atom, public instance: Atom, public $config?: Config) { }
 
   async login() {
   }
@@ -21,12 +23,19 @@ export default class Li {
     return await this.ky.get("https://jsonplaceholder.typicode.com/todos/1");
   }
 
-  runServer(server: HTTP): Server {
-    let io = this.io as typeof Server;
-    return new io(server, {
-      cors: {
-        origin: '*',
-      }
-    });
+  runServer(server: HTTP): Res {
+    try {
+      this.socket = new (this.io as IOBack).Server(server, {
+        cors: {
+          origin: '*',
+        }
+      });
+
+      return [null, true];
+    } catch (err) {
+      return [err, false];
+    }
   }
 }
+
+export * from "./general";

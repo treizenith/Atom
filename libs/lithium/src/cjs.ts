@@ -1,14 +1,14 @@
-// @ts-nocheck
-
-import fetch, { Headers, Request, Response } from 'node-fetch';
+import fetch, { Headers, Request, Response, RequestInit, RequestInfo } from 'node-fetch';
+import type { Headers as $Headers, Request as $Request, Response as $Response, RequestInit as $RequestInit, RequestInfo as $RequestInfo } from 'node-fetch';
 import AbortController from 'abort-controller';
+import type $AbortController from "abort-controller";
 import ky from 'ky';
 import io from "socket.io";
 
 const TEN_MEGABYTES = 1000 * 1000 * 10;
 
 if (!globalThis.fetch) {
-  globalThis.fetch = (url, options) => fetch(url, { highWaterMark: TEN_MEGABYTES, ...options });
+  globalThis.fetch = (url: RequestInfo, options: RequestInit) => fetch(url, { highWaterMark: TEN_MEGABYTES, ...options } as RequestInit);
 }
 
 if (!globalThis.Headers) {
@@ -40,7 +40,16 @@ import Li from "./li";
 export default function LithiumWrapper(config: Config) {
   return function Lithium(instance: Atom, atom: typeof Atom) {
     return {
-      $li: new Li(ky, io.Server, atom, instance, config),
+      $li: new Li(ky, io, atom, instance, config),
     }
   }
+}
+
+export declare module globalThis {
+  export function fetch(url: $RequestInfo, options: $RequestInit): Promise<$Response>;
+  export var Headers: typeof $Headers;
+  export var Request: typeof $Request;
+  export var Response: typeof $Response;
+  export var AbortController: typeof $AbortController;
+  export var ReadableStream: ReadableStream;
 }

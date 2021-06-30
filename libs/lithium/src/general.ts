@@ -1,13 +1,15 @@
-import type * as $ServerIO from "socket.io";
-import type * as $ClientIO from "socket.io-client";
+import type ServerIO from "socket.io";
+import type ClientIO from "socket.io-client";
+import type { ReturnTypeOf } from "../../../core/quark/types";
+import type { Server as $Server } from "socket.io";
 
 export interface Config {
 
 }
 
-export type ClientIO = typeof $ClientIO;
-export type ServerIO = typeof $ServerIO;
-export interface IOTYPE {
-  client: ClientIO,
-  server: ServerIO,
-}
+export type IOFront = typeof ClientIO;
+export type IOBack = typeof ServerIO;
+export type Server = $Server;
+export type Client = ReturnTypeOf<IOFront>;
+
+export type Res = [null | Error, any]

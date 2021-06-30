@@ -1,22 +1,23 @@
 /// <reference types="node" />
 import type Atom from '@treizenith/atom';
 import type { Server as HTTP } from "http";
-import type { Server } from "socket.io";
-import type { io as IO } from "socket.io-client";
 import type { ky } from 'ky/distribution/types/ky';
-import type { Config } from './general';
-export default class Li {
+import type { Config, Server, IOBack, IOFront, Client, Res } from './general';
+export default class Li<T> {
     ky: ky;
-    io: typeof IO & typeof Server;
+    io: IOFront | IOBack;
     atom: typeof Atom;
     instance: Atom;
     $config?: Config | undefined;
     props: {
         url: string;
     };
-    constructor(ky: ky, io: typeof IO & typeof Server, atom: typeof Atom, instance: Atom, $config?: Config | undefined);
+    socket?: Server | Client;
+    user: import("@treizenith/atom").ObservableMega<T>;
+    constructor(ky: ky, io: IOFront | IOBack, atom: typeof Atom, instance: Atom, $config?: Config | undefined);
     login(): Promise<void>;
     init(): Promise<Response>;
-    runServer(server: HTTP): Server;
+    runServer(server: HTTP): Res;
 }
+export * from "./general";
 //# sourceMappingURL=li.d.ts.map
