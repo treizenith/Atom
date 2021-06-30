@@ -20,7 +20,7 @@
 		"noImplicitReturns": true,
 		"noUnusedLocals": false,
 		"noImplicitAny": true,
-		"noUnusedParameters": true,
+		"noUnusedParameters": false,
 		"strict": true,
 
 		// Type-checking settings.

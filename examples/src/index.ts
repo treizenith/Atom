@@ -1,52 +1,25 @@
-import * as express from "express";
-import * as path from "path";
-import $http from "http";
-import cors from "cors";
-import Atom from "../../core/atom";
-import Li from "../../libs/lithium";
-import type { Socket } from "socket.io";
-
-
-const app = express.default();
-app.use(cors());
-app.set("port", process.env.PORT || 3000);
-
-let http = new $http.Server(app);
-// set up socket.io and bind it to our
-// http server.
-let elem = new Atom().plug(Li({})).plug((el) => {
-  return {
-    io: el.$li.runServer(http),
-  }
-});
-
-console.log(elem.io);
-// let io = new socketio.Server(http);
-
-// whenever a user connects on port 3000 via
-
-let i = 0;
-// a websocket, log that a user has connected
-elem.io.on("connection", function (socket: Socket) {
-  console.log("a user connected");
-  // whenever we receive a 'message' we log it out
-
-  setInterval(() => {
-    i++;
-    socket.emit("message", i);
-  }, 100);
-});
-
-const server = http.listen(3000, function () {
-  console.log("listening on *:3000");
-});
-
 // import Atom from "../../core/atom";
 // import Li from "../../libs/lithium";
+// import express from "express";
+// import cors from "cors";
+// import http from "http";
 
 // let elem = new Atom().plug(Li({}));
 
-// elem.
+// const app = express();
+// app.use(cors({
+//   allowedHeaders: "*",
+// }))
+// const server = http.createServer(app);
+// const io = elem.$li.runServer(server);
+
+// io.on('connection', (socket) => {
+//   console.log('a user connected');
+// });
+
+// server.listen(3000, () => {
+//   console.log('listening on *:3000');
+// });
 
 // // let newPlugin = () => ({
 // //   $: {
@@ -58,8 +31,6 @@ const server = http.listen(3000, function () {
 // //   $: {
 // //     foo2: "sa"
 // //   },
-
-// //   yarrak: "anan"
 // // });
 
 // let atom;
@@ -69,18 +40,55 @@ const server = http.listen(3000, function () {
 
 // atom = new Atom();
 
-// let { space, computed } = Atom.reactor;
-// let { cb, diff } = Atom._.u;
+// function Rename<T, U extends any[], >(name: String, body: Z, self?: T, ...args: U): Z {
+//   let binded = (function (this: T, body: Z, ...args: U) {
+//     console.log(this, body, args);
+//   }).bind(self as T, body);
+//   console.log(binded, binded)
+//   return new Function(
+//     `return function ${name} (...args) { (${binded.toString()})(...args) }`
+//   )();
+// }
 
-// let user = space({
-//   name: "ahmet",
-//   surname: "eker",
-//   age: 17,
-//   items: {
-//     sword: "excalibur",
-//     shield: "castifiol",
-//   }
-// });
+function Rename<Z extends Function>(fn: Z, name: string): Z {
+  return Function("fn", "return (function " + name + "(){\n  return fn.apply(this, arguments)\n});")(fn);
+}
+
+let newF = Rename((greeting: string,) => { console.log(greeting) }, "bruh");
+
+console.log(newF)
+newF("Ahmet")
+
+import Atom from "../../core/atom";
+
+let { state, computed } = Atom.reactor;
+
+let name = state("Ahmet");
+let surname = state("Eker");
+
+name.subscribe(function here(val, old) {
+  console.log(`new: ${val}\nold: ${old}`);
+});
+
+surname.subscribe((val, old) => {
+  console.log(`new: ${val}\nold: ${old}`);
+});
+
+let fullName = computed(() => {
+  return `${name()} ${surname()}`;
+});
+
+let greeting = computed(() => {
+  return `Merhaba${name()}`;
+});
+
+name("Ahmets");
+name("Ahmetsss");
+surname("Kaplan");
+
+
+console.log(fullName(), greeting(), name.subscribers, surname.subscribers);
+
 
 // user.subscribe(cb(diff.map, (diff) => {
 //   console.log(diff);
