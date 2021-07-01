@@ -28,6 +28,7 @@ export default class quark {
         merge: typeof import("./utils/merge").default;
         diff: typeof import("./utils/diff");
         cb: typeof import("./utils/cb").default;
+        rn: typeof import("./utils/rn").default;
     };
     static obj: {
         get: typeof import("./obj/get").default;
