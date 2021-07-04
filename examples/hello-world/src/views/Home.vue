@@ -9,7 +9,7 @@
 import { defineComponent, ref, onUnmounted } from 'vue';
 import HelloWorld from '../components/HelloWorld.vue'; // @ is an alias to /src
 
-import elem from '../elem';
+import elem from '../atom/elem';
 
 export default defineComponent({
 	name: 'Home',
@@ -21,10 +21,10 @@ export default defineComponent({
 		let OnConnect = (data: unknown) => {
 			console.log(data);
 		};
-		elem.io.on('message', OnConnect);
+		elem.parent.on('message', OnConnect);
 
 		onUnmounted(() => {
-			elem.io.off('message', OnConnect);
+			elem.parent.off('message', OnConnect);
 		});
 	},
 });

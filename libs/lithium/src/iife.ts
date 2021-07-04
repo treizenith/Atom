@@ -13,3 +13,4 @@ export default function LithiumWrapper(config: Config) {
     }
   }
 }
+export * from "./general";

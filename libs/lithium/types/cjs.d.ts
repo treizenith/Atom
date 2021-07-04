@@ -4,7 +4,7 @@ import type Atom from '@treizenith/atom';
 import type { Config } from './general';
 import Li from "./li";
 export default function LithiumWrapper(config: Config): (instance: Atom, atom: typeof Atom) => {
-    $li: Li<unknown>;
+    $li: Li;
 };
 export declare module globalThis {
     function fetch(url: $RequestInfo, options: $RequestInit): Promise<$Response>;
@@ -14,4 +14,5 @@ export declare module globalThis {
     var AbortController: typeof $AbortController;
     var ReadableStream: ReadableStream;
 }
+export * from "./general";
 //# sourceMappingURL=cjs.d.ts.map

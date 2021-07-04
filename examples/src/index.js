@@ -8,19 +8,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// let elem = new Atom().plug(Li({}));
+// import $user from "./services/user";
+// let elem = new Atom().plug(Li({
+// }));
 // const app = express();
 // app.use(cors({
 //   allowedHeaders: "*",
-// }))
+// }));
 // const server = http.createServer(app);
-// const io = elem.$li.runServer(server);
-// io.on('connection', (socket) => {
-//   console.log('a user connected');
-// });
+// elem.$li.registerApp(app);
+// elem.$li.runServer(server);
+// elem.$li.registerService($user);
 // server.listen(3000, () => {
 //   console.log('listening on *:3000');
 // });
+// export default elem;
 // // let newPlugin = () => ({
 // //   $: {
 // //     foo: "sa"
@@ -44,32 +46,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 //     `return function ${name} (...args) { (${binded.toString()})(...args) }`
 //   )();
 // }
-function Rename(fn, name) {
-    return Function("fn", "return (function " + name + "(){\n  return fn.apply(this, arguments)\n});")(fn);
-}
-let newF = Rename((greeting) => { console.log(greeting); }, "bruh");
-console.log(newF);
-newF("Ahmet");
 const atom_1 = __importDefault(require("../../core/atom"));
+// let newF = Atom._.u.rn((greeting: string,) => { console.log(greeting) }, "bruh");
+// console.log(newF)
+// newF("Ahmet")
 let { state, computed } = atom_1.default.reactor;
 let name = state("Ahmet");
 let surname = state("Eker");
-name.subscribe(function here(val, old) {
-    console.log(`new: ${val}\nold: ${old}`);
-});
-surname.subscribe((val, old) => {
-    console.log(`new: ${val}\nold: ${old}`);
-});
-let fullName = computed(() => {
-    return `${name()} ${surname()}`;
-});
-let greeting = computed(() => {
-    return `Merhaba${name()}`;
+let computedData = computed(() => {
+    return `new: ${name()}\nold: ${surname()}\n`;
 });
 name("Ahmets");
 name("Ahmetsss");
-surname("Kaplan");
-console.log(fullName(), greeting(), name.subscribers, surname.subscribers);
+console.log(computedData(), name(), surname());
 // user.subscribe(cb(diff.map, (diff) => {
 //   console.log(diff);
 // }))

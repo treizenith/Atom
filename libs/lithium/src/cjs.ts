@@ -53,3 +53,4 @@ export declare module globalThis {
   export var AbortController: typeof $AbortController;
   export var ReadableStream: ReadableStream;
 }
+export * from "./general";

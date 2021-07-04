@@ -4,22 +4,29 @@
 // import cors from "cors";
 // import http from "http";
 
-// let elem = new Atom().plug(Li({}));
+// import $user from "./services/user";
+
+// let elem = new Atom().plug(Li({
+
+// }));
 
 // const app = express();
+
 // app.use(cors({
 //   allowedHeaders: "*",
-// }))
-// const server = http.createServer(app);
-// const io = elem.$li.runServer(server);
+// }));
 
-// io.on('connection', (socket) => {
-//   console.log('a user connected');
-// });
+// const server = http.createServer(app);
+// elem.$li.registerApp(app);
+// elem.$li.runServer(server);
+
+// elem.$li.registerService($user);
 
 // server.listen(3000, () => {
 //   console.log('listening on *:3000');
 // });
+
+// export default elem;
 
 // // let newPlugin = () => ({
 // //   $: {
@@ -50,44 +57,26 @@
 //   )();
 // }
 
-function Rename<Z extends Function>(fn: Z, name: string): Z {
-  return Function("fn", "return (function " + name + "(){\n  return fn.apply(this, arguments)\n});")(fn);
-}
-
-let newF = Rename((greeting: string,) => { console.log(greeting) }, "bruh");
-
-console.log(newF)
-newF("Ahmet")
-
 import Atom from "../../core/atom";
+
+// let newF = Atom._.u.rn((greeting: string,) => { console.log(greeting) }, "bruh");
+
+// console.log(newF)
+// newF("Ahmet")
+
 
 let { state, computed } = Atom.reactor;
 
 let name = state("Ahmet");
 let surname = state("Eker");
 
-name.subscribe(function here(val, old) {
-  console.log(`new: ${val}\nold: ${old}`);
-});
-
-surname.subscribe((val, old) => {
-  console.log(`new: ${val}\nold: ${old}`);
-});
-
-let fullName = computed(() => {
-  return `${name()} ${surname()}`;
-});
-
-let greeting = computed(() => {
-  return `Merhaba${name()}`;
+let computedData = computed(() => {
+  return `new: ${name()}\nold: ${surname()}\n`
 });
 
 name("Ahmets");
 name("Ahmetsss");
-surname("Kaplan");
-
-
-console.log(fullName(), greeting(), name.subscribers, surname.subscribers);
+console.log(computedData(), name(), surname());
 
 
 // user.subscribe(cb(diff.map, (diff) => {
