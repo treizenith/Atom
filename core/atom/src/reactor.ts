@@ -55,7 +55,7 @@ export function state<T>(value?: T): Observable<T> {
   self.subscribers = subscribers;
 
   function write(newValue: T) {
-    if (newValue === value && (value === null || typeof value !== 'object')) {
+    if (Atom._.is.same(newValue, value)) {
       return;
     }
 
@@ -87,6 +87,7 @@ export const computed = <T>(fn: Computation<T>): Observable<T> => {
   var self = state<T>();
   var computationToken = [runComputed]
   var priv = Atom.unique();
+  self.priv = priv;
 
   map[priv] = map[priv] || [];
 

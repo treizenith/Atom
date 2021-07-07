@@ -9,15 +9,16 @@ export default class Li {
     atom: typeof Atom;
     instance: Atom;
     $config?: Config | undefined;
+    isClient: boolean;
     props: {
         url: string;
     };
-    serviceList: Record<string, ReturnType<Service>>;
+    serviceList: import("@treizenith/atom").ObservableMega<Record<string, import("./general").ServiceRes>>;
     primary?: Server;
     app?: RequestListener;
-    constructor(ky: ky, io: IOFront | IOBack, atom: typeof Atom, instance: Atom, $config?: Config | undefined);
+    constructor(ky: ky, io: IOFront | IOBack, atom: typeof Atom, instance: Atom, $config?: Config | undefined, isClient?: boolean);
     login(): Promise<void>;
-    init(): Promise<Response>;
+    init(): Promise<void>;
     runServer(server: HTTP, options?: OPTBack): Server;
     client(url: string, options?: OPT): Client;
     registerApp(app: RequestListener): void;

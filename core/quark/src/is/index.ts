@@ -11,6 +11,7 @@ import str from './string';
 import und from './undefined';
 import like from './like';
 import objEmp from "./object_empty";
+import same from "./same";
 
 export default {
 	arr,
@@ -25,5 +26,6 @@ export default {
 	str,
 	und,
 	like,
-	objEmp
+	objEmp,
+	same,
 };

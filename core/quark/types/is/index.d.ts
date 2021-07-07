@@ -11,6 +11,7 @@ import str from './string';
 import und from './undefined';
 import like from './like';
 import objEmp from "./object_empty";
+import same from "./same";
 declare const _default: {
     arr: typeof arr;
     bool: typeof bool;
@@ -25,6 +26,7 @@ declare const _default: {
     und: typeof und;
     like: typeof like;
     objEmp: typeof objEmp;
+    same: typeof same;
 };
 export default _default;
 //# sourceMappingURL=index.d.ts.map

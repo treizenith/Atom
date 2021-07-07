@@ -40,7 +40,7 @@ import Li from "./li";
 export default function LithiumWrapper(config: Config) {
   return function Lithium(instance: Atom, atom: typeof Atom) {
     return {
-      $li: new Li(ky, io, atom, instance, config),
+      $li: new Li(ky, io, atom, instance, config, false),
     }
   }
 }

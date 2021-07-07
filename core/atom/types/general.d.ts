@@ -23,6 +23,7 @@ export declare type ReturnTypeOf<T extends AnyFunction | AnyFunction[]> = T exte
 export interface Observable<T> {
     (newValue: T): void;
     (): T;
+    priv?: string;
     subscribe: AddSubscriber<T>;
     unsubscribe: RemoveSubscriber;
     subscribers: Subscriber<T>[];
@@ -30,6 +31,7 @@ export interface Observable<T> {
 export interface ObservableMega<T> {
     (newValue: T): void;
     (): T;
+    priv?: string;
     subscribe: AddSubscriber<T>;
     unsubscribe: RemoveSubscriber;
     set: (path: string | any[], value: unknown) => void;

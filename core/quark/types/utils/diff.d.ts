@@ -14,4 +14,8 @@ export declare function map(obj2: any, obj1: any): Diff | {
     $type: string;
     $data: any;
 };
+export declare function nDeep(obj2: any, obj1: any, r?: boolean): Diff | {
+    $type: string;
+    $data: any;
+};
 //# sourceMappingURL=diff.d.ts.map

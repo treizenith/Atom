@@ -21,6 +21,7 @@ export default class quark {
         und: typeof import("./is/undefined").default;
         like: typeof import("./is/like").default;
         objEmp: typeof import("./is/object_empty").default;
+        same: typeof import("./is/same").default;
     };
     static u: {
         pure: typeof import("./utils/pure").default;

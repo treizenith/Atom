@@ -1,27 +1,38 @@
 "use strict";
-// import Atom from "../../core/atom";
-// import Li from "../../libs/lithium";
-// import express from "express";
-// import cors from "cors";
-// import http from "http";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import $user from "./services/user";
-// let elem = new Atom().plug(Li({
-// }));
-// const app = express();
-// app.use(cors({
-//   allowedHeaders: "*",
-// }));
-// const server = http.createServer(app);
-// elem.$li.registerApp(app);
-// elem.$li.runServer(server);
-// elem.$li.registerService($user);
-// server.listen(3000, () => {
-//   console.log('listening on *:3000');
-// });
+const atom_1 = __importDefault(require("../../core/atom"));
+const lithium_1 = __importDefault(require("../../libs/lithium"));
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const http_1 = __importDefault(require("http"));
+const user_1 = __importDefault(require("./services/user"));
+(() => __awaiter(void 0, void 0, void 0, function* () {
+    let elem = new atom_1.default().plug(lithium_1.default({}));
+    yield elem.$li.init();
+    const app = express_1.default();
+    app.use(cors_1.default({
+        allowedHeaders: "*",
+    }));
+    const server = http_1.default.createServer(app);
+    elem.$li.registerApp(app);
+    elem.$li.runServer(server);
+    elem.$li.registerService(user_1.default);
+    server.listen(3000, () => {
+        console.log('listening on *:3000');
+    });
+}))();
 // export default elem;
 // // let newPlugin = () => ({
 // //   $: {
@@ -46,19 +57,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
 //     `return function ${name} (...args) { (${binded.toString()})(...args) }`
 //   )();
 // }
-const atom_1 = __importDefault(require("../../core/atom"));
-// let newF = Atom._.u.rn((greeting: string,) => { console.log(greeting) }, "bruh");
-// console.log(newF)
-// newF("Ahmet")
-let { state, computed } = atom_1.default.reactor;
-let name = state("Ahmet");
-let surname = state("Eker");
-let computedData = computed(() => {
-    return `new: ${name()}\nold: ${surname()}\n`;
-});
-name("Ahmets");
-name("Ahmetsss");
-console.log(computedData(), name(), surname());
+// import Atom from "../../core/atom"; 
+// // let newF = Atom._.u.rn((greeting: string,) => { console.log(greeting) }, "bruh");
+// // console.log(newF)
+// // newF("Ahmet")
+// let { state, computed } = Atom.reactor;
+// let name = state("Ahmet");
+// let surname = state("Eker");
+// function g() {
+//   console.log("here")
+// }
+// let computedData = computed(() => {
+//   console.log("oto", name(), surname());
+// }).subscribe(g);
+// name("Ahmets");
+// name("Ahmetsss");
+// console.log(Atom._.u.diff.map(["sa"], ["sa"]));
+// drop(computedData);
+// console.log(Atom._.u.diff.map({
+//   name: "Ahmet",
+//   surname: "EKER",
+//   items: {
+//     excalibur: "1lv",
+//     chastiefol: "2lsv"
+//   },
+//   friends: ["Alice", "Melek"]
+// }, {
+//   name: "Ahmet",
+//   surname: "EKER",
+//   items: {
+//     excalibur: "1lv",
+//     chastiefol: "2lv"
+//   },
+//   friends: ["Alice", "Melek"]
+// }))
+// console.log(computedData(), name(), surname());
 // user.subscribe(cb(diff.map, (diff) => {
 //   console.log(diff);
 // }))

@@ -13,6 +13,7 @@ export interface Config {
 
 export interface ServiceRes {
   name: string;
+  path: string;
   methods: Record<any, Function>;
   hooks?: {
     stop?: Function;

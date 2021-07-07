@@ -77,6 +77,53 @@ export function map(obj2: any, obj1: any) {
   return diff;
 }
 
+export function nDeep(obj2: any, obj1: any, r: boolean = false) {
+  if ($is.func(obj1) || $is.func(obj2)) {
+    throw 'Invalid argument. Function given, object expected.';
+  }
+  if (!$is.like(obj1) && !$is.like(obj2)) {
+    return {
+      $type: compareValues(obj1, obj2),
+      $data: obj1 === undefined ? obj2 : obj1
+    };
+  }
+
+  let diff: Diff = {};
+
+  for (var key in obj1) {
+    if ($is.func(obj1[key])) {
+      continue;
+    }
+
+    var value2 = undefined;
+    if (obj2[key] !== undefined) {
+      value2 = obj2[key];
+    }
+
+    diff[key] = nDeep(value2, obj1[key], true);
+  }
+
+  for (var key in obj2) {
+    if ($is.func(obj2[key]) || diff[key] !== undefined) {
+      continue;
+    }
+
+    let res = nDeep(obj2[key], undefined, true);
+    if(!!res.$type) {
+      diff[key] = res;
+    }
+  }
+  
+
+  for (let v in diff) {
+    if (diff[v].$type == VALUE_UNCHANGED || $is.objEmp(diff[v])) {
+      Reflect.deleteProperty(diff, v);
+    }
+  }
+
+  return diff;
+}
+
 // export function map(value: any, old: any) { // new, old
 //   if ($is.func(old) || $is.func(value)) {
 //     throw 'Invalid argument. Function given, object expected.';

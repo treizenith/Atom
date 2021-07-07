@@ -10,18 +10,22 @@ export default class Li {
       url: "",
     }
 
-  serviceList: Record<string, ReturnType<Service>> = {};
+  serviceList = this.atom.reactor.space<Record<string, ReturnType<Service>>>({});
 
   primary?: Server;
   app?: RequestListener;
 
-  constructor(public ky: ky, public io: IOFront | IOBack, public atom: typeof Atom, public instance: Atom, public $config?: Config) { }
+  constructor(public ky: ky, public io: IOFront | IOBack, public atom: typeof Atom, public instance: Atom, public $config?: Config, public isClient: boolean = true) { }
 
   async login() {
   }
 
   async init() {
-    return await this.ky.get("https://jsonplaceholder.typicode.com/todos/1");
+    this.serviceList.subscribe(this.atom._.u.cb((a, b) => {
+      return this.atom._.u.diff.nDeep(a, b, true);
+    }, (...args: any[]) => {
+      console.log(...args)
+    }))
   }
 
   runServer(server: HTTP, options?: OPTBack): Server {
@@ -49,6 +53,6 @@ export default class Li {
       s.hooks.start(this, opt);
     }
 
-    this.serviceList[s.name] = s;
+    this.serviceList.set(s.name, s);
   }
 }

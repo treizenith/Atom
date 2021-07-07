@@ -1,30 +1,34 @@
-// import Atom from "../../core/atom";
-// import Li from "../../libs/lithium";
-// import express from "express";
-// import cors from "cors";
-// import http from "http";
+import Atom from "../../core/atom";
+import Li from "../../libs/lithium";
+import express from "express";
+import cors from "cors";
+import http from "http";
 
-// import $user from "./services/user";
+import $user from "./services/user";
 
-// let elem = new Atom().plug(Li({
 
-// }));
 
-// const app = express();
-
-// app.use(cors({
-//   allowedHeaders: "*",
-// }));
-
-// const server = http.createServer(app);
-// elem.$li.registerApp(app);
-// elem.$li.runServer(server);
-
-// elem.$li.registerService($user);
-
-// server.listen(3000, () => {
-//   console.log('listening on *:3000');
-// });
+(async() => {
+  let elem = new Atom().plug(Li({
+  }));
+  await elem.$li.init();
+  
+  const app = express();
+  
+  app.use(cors({
+    allowedHeaders: "*",
+  }));
+  
+  const server = http.createServer(app);
+  elem.$li.registerApp(app);
+  elem.$li.runServer(server);
+  
+  elem.$li.registerService($user);
+  
+  server.listen(3000, () => {
+    console.log('listening on *:3000');
+  });
+})()
 
 // export default elem;
 
@@ -57,26 +61,54 @@
 //   )();
 // }
 
-import Atom from "../../core/atom";
+// import Atom from "../../core/atom"; 
 
-// let newF = Atom._.u.rn((greeting: string,) => { console.log(greeting) }, "bruh");
+// // let newF = Atom._.u.rn((greeting: string,) => { console.log(greeting) }, "bruh");
 
-// console.log(newF)
-// newF("Ahmet")
+// // console.log(newF)
+// // newF("Ahmet")
 
 
-let { state, computed } = Atom.reactor;
+// let { state, computed } = Atom.reactor;
 
-let name = state("Ahmet");
-let surname = state("Eker");
+// let name = state("Ahmet");
+// let surname = state("Eker");
 
-let computedData = computed(() => {
-  return `new: ${name()}\nold: ${surname()}\n`
-});
+// function g() {
+//   console.log("here")
+// }
 
-name("Ahmets");
-name("Ahmetsss");
-console.log(computedData(), name(), surname());
+// let computedData = computed(() => {
+//   console.log("oto", name(), surname());
+// }).subscribe(g);
+
+
+// name("Ahmets");
+// name("Ahmetsss");
+
+// console.log(Atom._.u.diff.map(["sa"], ["sa"]));
+
+// drop(computedData);
+
+// console.log(Atom._.u.diff.map({
+//   name: "Ahmet",
+//   surname: "EKER",
+//   items: {
+//     excalibur: "1lv",
+//     chastiefol: "2lsv"
+//   },
+//   friends: ["Alice", "Melek"]
+// }, {
+//   name: "Ahmet",
+//   surname: "EKER",
+//   items: {
+//     excalibur: "1lv",
+//     chastiefol: "2lv"
+//   },
+//   friends: ["Alice", "Melek"]
+// }))
+
+// console.log(computedData(), name(), surname());
 
 
 // user.subscribe(cb(diff.map, (diff) => {

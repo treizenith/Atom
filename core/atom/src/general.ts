@@ -40,6 +40,7 @@ export interface Observable<T> {
 	(newValue: T): void; // write
 	(): T; // read
 
+	priv?: string;
 	subscribe: AddSubscriber<T>;
 	unsubscribe: RemoveSubscriber;
 	subscribers: Subscriber<T>[]
@@ -49,6 +50,7 @@ export interface ObservableMega<T> {
 	(newValue: T): void; // write
 	(): T; // read
 
+	priv?: string;
 	subscribe: AddSubscriber<T>;
 	unsubscribe: RemoveSubscriber;
 	set: (path: string | any[], value: unknown) => void;
