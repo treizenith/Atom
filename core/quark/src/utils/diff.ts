@@ -1,21 +1,9 @@
+// @ts-nocheck
+
+import type { Diff } from "../general";
+
 import $is from "../is";
-
-export const VALUE_CREATED = 'created',
-  VALUE_UPDATED = 'updated',
-  VALUE_DELETED = 'deleted',
-  VALUE_UNCHANGED = 'unchanged';
-
-
-export type Diff = {
-  [key: string]: {
-    $type: string,
-    $data: any,
-  } | Diff,
-  [key: number]: {
-    $type: string,
-    $data: any,
-  } | Diff,
-}
+import { VALUE_UPDATED, VALUE_UNCHANGED, VALUE_DELETED, VALUE_CREATED, VALUE_CNTTRACK } from "../globals";
 
 export function compareValues(value1: unknown, value2: unknown) {
   if (value1 === value2) {
@@ -33,7 +21,7 @@ export function compareValues(value1: unknown, value2: unknown) {
   return VALUE_UPDATED;
 }
 
-export function map(obj2: any, obj1: any) {
+export function map(obj2: any, obj1: any): Diff {
   if ($is.func(obj1) || $is.func(obj2)) {
     throw 'Invalid argument. Function given, object expected.';
   }
@@ -49,6 +37,10 @@ export function map(obj2: any, obj1: any) {
 
   for (var key in obj1) {
     if ($is.func(obj1[key])) {
+      diff[key] = {
+        $type: VALUE_CNTTRACK,
+        $data: obj1[key]
+      }
       continue;
     }
 
@@ -62,6 +54,11 @@ export function map(obj2: any, obj1: any) {
 
   for (var key in obj2) {
     if ($is.func(obj2[key]) || diff[key] !== undefined) {
+      diff[key] = {
+
+        $type: VALUE_CNTTRACK,
+        $data: obj2[key]
+      }
       continue;
     }
 
@@ -69,7 +66,7 @@ export function map(obj2: any, obj1: any) {
   }
 
   for (let v in diff) {
-    if (diff[v].$type == VALUE_UNCHANGED || $is.objEmp(diff[v])) {
+    if ((diff[v] as any).$type == VALUE_UNCHANGED || $is.objEmp(diff[v])) {
       Reflect.deleteProperty(diff, v);
     }
   }
@@ -77,12 +74,13 @@ export function map(obj2: any, obj1: any) {
   return diff;
 }
 
-export function nDeep(obj2: any, obj1: any, r: boolean = false) {
+export function same(obj1: any, obj2: any, level: number = 0): Diff {
   if ($is.func(obj1) || $is.func(obj2)) {
     throw 'Invalid argument. Function given, object expected.';
   }
   if (!$is.like(obj1) && !$is.like(obj2)) {
     return {
+
       $type: compareValues(obj1, obj2),
       $data: obj1 === undefined ? obj2 : obj1
     };
@@ -90,8 +88,16 @@ export function nDeep(obj2: any, obj1: any, r: boolean = false) {
 
   let diff: Diff = {};
 
+  obj1 = $is.obj(obj1) ? obj1 : {};
+  obj2 = $is.obj(obj2) ? obj2 : {};
+
   for (var key in obj1) {
     if ($is.func(obj1[key])) {
+      diff[key] = {
+
+        $type: VALUE_CNTTRACK,
+        $data: obj1[key]
+      }
       continue;
     }
 
@@ -100,77 +106,45 @@ export function nDeep(obj2: any, obj1: any, r: boolean = false) {
       value2 = obj2[key];
     }
 
-    diff[key] = nDeep(value2, obj1[key], true);
+    let res = same(obj1[key], value2, level - 1);
+    if (level > 0) {
+      diff[key] = res;
+    } else {
+      diff[key] = {
+
+        $type: compareValues(value2, obj1[key]),
+        $data: value2 === undefined ? obj1[key] : value2
+      }
+    }
   }
 
   for (var key in obj2) {
     if ($is.func(obj2[key]) || diff[key] !== undefined) {
+      diff[key] = {
+
+        $type: VALUE_CNTTRACK,
+        $data: obj2[key]
+      }
       continue;
     }
 
-    let res = nDeep(obj2[key], undefined, true);
-    if(!!res.$type) {
+    let res = same(undefined, obj2[key], level - 1);
+    if (level > 0) {
       diff[key] = res;
+    } else {
+      diff[key] = {
+
+        $type: compareValues(obj2[key], undefined),
+        $data: obj2[key] === undefined ? undefined : obj2[key]
+      }
     }
   }
-  
 
   for (let v in diff) {
-    if (diff[v].$type == VALUE_UNCHANGED || $is.objEmp(diff[v])) {
+    if ((diff[v] as any).$type == VALUE_UNCHANGED || $is.objEmp(diff[v])) {
       Reflect.deleteProperty(diff, v);
     }
   }
 
   return diff;
 }
-
-// export function map(value: any, old: any) { // new, old
-//   if ($is.func(old) || $is.func(value)) {
-//     throw 'Invalid argument. Function given, object expected.';
-//   }
-
-//   if (!$is.like(old) && !$is.like(value)) {
-//     let res = {
-//       $type: compareValues(old, value),
-//       $data: (value === undefined) ? old : value
-//     };
-
-//     if (res.$type == VALUE_UNCHANGED) {
-//       return false;
-//     }
-
-//     return res;
-//   }
-
-//   var diff: Diff = {};
-
-//   for (var key in old) {
-//     if ($is.func(old[key])) {
-//       continue;
-//     }
-
-//     var value2 = undefined;
-//     if (value[key] !== undefined) {
-//       value2 = value[key];
-//     }
-
-//     diff[key] = map(old[key], value2);
-//   }
-//   for (var key in value) {
-//     if ($is.func(value[key]) || diff[key] !== undefined) {
-//       continue;
-//     }
-
-//     diff[key] = map(undefined, value[key]);
-//   }
-
-//   let r: Diff = {};
-
-//   for (let i in diff) {
-//     if (diff[i]) {
-//       r[i] = diff[i]
-//     }
-//   }
-
-//   return r;
-// }

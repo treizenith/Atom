@@ -14,6 +14,8 @@ export interface ServiceRes {
     hooks?: {
         stop?: Function;
         start?: Function;
+        afterStart?: Function;
+        afterStop?: Function;
     };
 }
 export declare type Service = (this: Li, atom: typeof Atom, instance: Atom, service: Service) => ServiceRes;

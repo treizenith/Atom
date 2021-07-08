@@ -1,21 +1,5 @@
-export declare const VALUE_CREATED = "created", VALUE_UPDATED = "updated", VALUE_DELETED = "deleted", VALUE_UNCHANGED = "unchanged";
-export declare type Diff = {
-    [key: string]: {
-        $type: string;
-        $data: any;
-    } | Diff;
-    [key: number]: {
-        $type: string;
-        $data: any;
-    } | Diff;
-};
-export declare function compareValues(value1: unknown, value2: unknown): "created" | "updated" | "deleted" | "unchanged";
-export declare function map(obj2: any, obj1: any): Diff | {
-    $type: string;
-    $data: any;
-};
-export declare function nDeep(obj2: any, obj1: any, r?: boolean): Diff | {
-    $type: string;
-    $data: any;
-};
+import type { Diff } from "../general";
+export declare function compareValues(value1: unknown, value2: unknown): "unchanged" | "created" | "deleted" | "updated";
+export declare function map(obj2: any, obj1: any): Diff;
+export declare function same(obj1: any, obj2: any, level?: number): Diff;
 //# sourceMappingURL=diff.d.ts.map

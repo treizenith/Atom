@@ -6,4 +6,10 @@ export declare type OPT = {
     [key: number]: any;
 };
 export declare type ReturnTypeOf<T extends AnyFunction | AnyFunction[]> = T extends AnyFunction ? ReturnType<T> : T extends AnyFunction[] ? UnionToIntersection<ReturnType<T[number]>> : never;
+export interface Diff {
+    $type?: any;
+    $data?: any;
+    [key: string]: Diff;
+    [key: number]: Diff;
+}
 //# sourceMappingURL=general.d.ts.map
