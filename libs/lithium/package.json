@@ -1,6 +1,6 @@
 {
 	"name": "@treizenith/lithium",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "package for connecting apps for universe",
 	"main": "dist/index.js",
 	"types": "types/index.d.ts",
